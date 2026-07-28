@@ -1,30 +1,48 @@
 # Y70 F.R.I.D.A.Y. v2 — AIDA64 SensorPanel generator (HYTE Y70 Touch, 685x2560)
 # Generates: background.png (via headless Chrome), preview.png, .sensorpanel
-# Usage: python gen.py       -> night (gold on black), Y70-FRIDAY-V2
-#        python gen.py day   -> day   (dark gold on cream), Y70-FRIDAY-DAY
+# Usage: python gen.py        -> night (gold on black), Y70-FRIDAY-V2
+#        python gen.py day    -> day   (dark gold on cream), Y70-FRIDAY-DAY
+#        python gen.py blue   -> night (arc-reactor blue), Y70-FRIDAY-BLUE
 import subprocess, os, sys
 
-DAY = len(sys.argv) > 1 and sys.argv[1] == "day"
+THEME = sys.argv[1] if len(sys.argv) > 1 else "night"
+DAY = THEME == "day"
 OUT = os.path.dirname(os.path.abspath(__file__))
-OUT = os.path.join(OUT, "out-day" if DAY else "out-night")
+OUT = os.path.join(OUT, f"out-{THEME}")
 os.makedirs(OUT, exist_ok=True)
-NAME = "Y70-FRIDAY-DAY" if DAY else "Y70-FRIDAY-V2"
+NAME = {"night": "Y70-FRIDAY-V2", "day": "Y70-FRIDAY-DAY", "blue": "Y70-FRIDAY-BLUE"}[THEME]
 W, H = 685, 2560
 CHROME = r"C:\Program Files\Google\Chrome\Application\chrome.exe"
 
 # ---------- palette ----------
+# key names keep the night theme's vocabulary (gold = primary accent, etc.)
 PAL = dict(
     gold="#FFB800", bright="#FFD76A", cream="#FFE48A", text="#F5E6C0",
     muted="#8A7340", line="#3D2C00", line2="#6B4C00", panel="#0A0703",
     warn="#FF9500", bad="#FF3B3B", dark="#1A1100",
 )
-if DAY:
+if THEME == "day":
     PAL.update(
         gold="#9C7400", bright="#845F00", cream="#755808", text="#3A3018",
         muted="#857347", line="#CDBB88", line2="#B0924E", panel="#F1E4C4",
         warn="#D97700", bad="#CC2222", dark="#E0CFA4",
     )
-GLOW = "rgba(140,105,0,.20)" if DAY else "rgba(255,184,0,.35)"
+elif THEME == "blue":
+    PAL.update(
+        gold="#00A8FF", bright="#6ECBFF", cream="#A5DEFF", text="#C8E4F5",
+        muted="#48688A", line="#00263D", line2="#00517E", panel="#020A10",
+        warn="#FFB03C", bad="#FF3B3B", dark="#001828",
+    )
+GLOW = {"day": "rgba(140,105,0,.20)", "night": "rgba(255,184,0,.35)",
+        "blue": "rgba(0,168,255,.38)"}[THEME]
+BODYBG = {"day": "#E4D5AF", "night": "#000", "blue": "#000205"}[THEME]
+GLOW1 = {"day": "rgba(244,231,199,.7)", "night": "rgba(255,215,106,.10)", "blue": "rgba(110,203,255,.10)"}[THEME]
+GLOW2 = {"day": "rgba(240,226,190,.5)", "night": "rgba(255,184,0,.06)", "blue": "rgba(0,168,255,.06)"}[THEME]
+GLOW3 = {"day": "rgba(242,228,193,.6)", "night": "rgba(255,184,0,.08)", "blue": "rgba(0,168,255,.09)"}[THEME]
+SCAN = {"day": "rgba(130,95,0,.035)", "night": "rgba(255,184,0,.02)", "blue": "rgba(0,168,255,.025)"}[THEME]
+FRAMEBG = {"day": "rgba(243,230,198,.8),rgba(236,220,180,.6)",
+           "night": "rgba(26,17,0,.55),rgba(10,7,3,.35)",
+           "blue": "rgba(0,22,38,.60),rgba(2,8,14,.38)"}[THEME]
 def cref(hexcol):  # '#RRGGBB' -> Windows COLORREF int (R + G<<8 + B<<16)
     r, g, b = int(hexcol[1:3], 16), int(hexcol[3:5], 16), int(hexcol[5:7], 16)
     return r + (g << 8) + (b << 16)
@@ -253,7 +271,7 @@ def build_html(with_preview):
             _, x, y, w, h = k
             el.append(
                 f'<div style="position:absolute;left:{x}px;top:{y}px;width:{w}px;height:{h}px;'
-                f'background:linear-gradient(180deg,{"rgba(243,230,198,.8),rgba(236,220,180,.6)" if DAY else "rgba(26,17,0,.55),rgba(10,7,3,.35)"});'
+                f'background:linear-gradient(180deg,{FRAMEBG});'
                 f'border:1px solid {PAL["line2"]};'
                 f'clip-path:polygon(0 14px,14px 0,calc(100% - 14px) 0,100% 14px,100% calc(100% - 14px),'
                 f'calc(100% - 14px) 100%,14px 100%,0 calc(100% - 14px));"></div>'
@@ -288,12 +306,12 @@ def build_html(with_preview):
                      f'<div style="width:{fill}%;height:100%;background:{PAL["gold"]};"></div></div>')
     return f"""<!DOCTYPE html><html><head><meta charset="utf-8"><style>
 *{{margin:0;padding:0;box-sizing:border-box}}
-html,body{{width:{W}px;height:{H}px;overflow:hidden;background:{"#E4D5AF" if DAY else "#000"}}}
+html,body{{width:{W}px;height:{H}px;overflow:hidden;background:{BODYBG}}}
 body::before{{content:"";position:fixed;inset:0;background:
- radial-gradient(ellipse 90% 40% at 50% 8%,{"rgba(244,231,199,.7)" if DAY else "rgba(255,215,106,.10)"},transparent 70%),
- radial-gradient(ellipse 90% 30% at 50% 55%,{"rgba(240,226,190,.5)" if DAY else "rgba(255,184,0,.06)"},transparent 70%),
- radial-gradient(ellipse 90% 30% at 50% 95%,{"rgba(242,228,193,.6)" if DAY else "rgba(255,184,0,.08)"},transparent 70%),
- repeating-linear-gradient(0deg,{"rgba(130,95,0,.035)" if DAY else "rgba(255,184,0,.02)"} 0 1px,transparent 1px 3px);}}
+ radial-gradient(ellipse 90% 40% at 50% 8%,{GLOW1},transparent 70%),
+ radial-gradient(ellipse 90% 30% at 50% 55%,{GLOW2},transparent 70%),
+ radial-gradient(ellipse 90% 30% at 50% 95%,{GLOW3},transparent 70%),
+ repeating-linear-gradient(0deg,{SCAN} 0 1px,transparent 1px 3px);}}
 </style></head><body>{corners}{"".join(el)}{pvel}</body></html>"""
 
 for name, wp in [("bg.html", False), ("preview.html", True)]:
