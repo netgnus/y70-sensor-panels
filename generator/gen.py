@@ -20,9 +20,9 @@ PAL = dict(
 )
 if DAY:
     PAL.update(
-        gold="#A67C00", bright="#8A6400", cream="#7A5C10", text="#3D3220",
-        muted="#8A7A55", line="#D9CBA0", line2="#C2A96B", panel="#FAF4E4",
-        warn="#D97700", bad="#CC2222", dark="#EADFC2",
+        gold="#9C7400", bright="#845F00", cream="#755808", text="#3A3018",
+        muted="#857347", line="#CDBB88", line2="#B0924E", panel="#F1E4C4",
+        warn="#D97700", bad="#CC2222", dark="#E0CFA4",
     )
 GLOW = "rgba(140,105,0,.20)" if DAY else "rgba(255,184,0,.35)"
 def cref(hexcol):  # '#RRGGBB' -> Windows COLORREF int (R + G<<8 + B<<16)
@@ -239,7 +239,7 @@ def build_html(with_preview):
             _, x, y, w, h = k
             el.append(
                 f'<div style="position:absolute;left:{x}px;top:{y}px;width:{w}px;height:{h}px;'
-                f'background:linear-gradient(180deg,{"rgba(250,244,228,.75),rgba(244,236,214,.55)" if DAY else "rgba(26,17,0,.55),rgba(10,7,3,.35)"});'
+                f'background:linear-gradient(180deg,{"rgba(243,230,198,.8),rgba(236,220,180,.6)" if DAY else "rgba(26,17,0,.55),rgba(10,7,3,.35)"});'
                 f'border:1px solid {PAL["line2"]};'
                 f'clip-path:polygon(0 14px,14px 0,calc(100% - 14px) 0,100% 14px,100% calc(100% - 14px),'
                 f'calc(100% - 14px) 100%,14px 100%,0 calc(100% - 14px));"></div>'
@@ -274,12 +274,12 @@ def build_html(with_preview):
                      f'<div style="width:{fill}%;height:100%;background:{PAL["gold"]};"></div></div>')
     return f"""<!DOCTYPE html><html><head><meta charset="utf-8"><style>
 *{{margin:0;padding:0;box-sizing:border-box}}
-html,body{{width:{W}px;height:{H}px;overflow:hidden;background:{"#F1E9D2" if DAY else "#000"}}}
+html,body{{width:{W}px;height:{H}px;overflow:hidden;background:{"#E4D5AF" if DAY else "#000"}}}
 body::before{{content:"";position:fixed;inset:0;background:
- radial-gradient(ellipse 90% 40% at 50% 8%,{"rgba(255,252,240,.85)" if DAY else "rgba(255,215,106,.10)"},transparent 70%),
- radial-gradient(ellipse 90% 30% at 50% 55%,{"rgba(255,250,232,.55)" if DAY else "rgba(255,184,0,.06)"},transparent 70%),
- radial-gradient(ellipse 90% 30% at 50% 95%,{"rgba(255,250,232,.65)" if DAY else "rgba(255,184,0,.08)"},transparent 70%),
- repeating-linear-gradient(0deg,{"rgba(140,105,0,.03)" if DAY else "rgba(255,184,0,.02)"} 0 1px,transparent 1px 3px);}}
+ radial-gradient(ellipse 90% 40% at 50% 8%,{"rgba(244,231,199,.7)" if DAY else "rgba(255,215,106,.10)"},transparent 70%),
+ radial-gradient(ellipse 90% 30% at 50% 55%,{"rgba(240,226,190,.5)" if DAY else "rgba(255,184,0,.06)"},transparent 70%),
+ radial-gradient(ellipse 90% 30% at 50% 95%,{"rgba(242,228,193,.6)" if DAY else "rgba(255,184,0,.08)"},transparent 70%),
+ repeating-linear-gradient(0deg,{"rgba(130,95,0,.035)" if DAY else "rgba(255,184,0,.02)"} 0 1px,transparent 1px 3px);}}
 </style></head><body>{corners}{"".join(el)}{pvel}</body></html>"""
 
 for name, wp in [("bg.html", False), ("preview.html", True)]:
