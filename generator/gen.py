@@ -175,23 +175,32 @@ btxt(LX, y0 + 90, 11, PAL["muted"], "USED", ls=0.2);    simple(VX, y0 + 86, 14, 
 bar(LX, y0 + 110, IR - LX, 9, "SMEMUTI")
 btxt(LX, y0 + 130, 11, PAL["muted"], "FREE", ls=0.2);   simple(VX, y0 + 126, 14, C["text"], "SFREEMEM", unit="MB")
 btxt(LX, y0 + 164, 11, PAL["muted"], "VIRTUAL", ls=0.2); simple(VX, y0 + 160, 14, C["text"], "SVMEMUSAGE", unit="%")
-btxt(LX, y0 + 198, 11, PAL["muted"], "MOBO TEMP", ls=0.2); simple(VX, y0 + 194, 14, C["bright"], "TMOBO", unit="°C")
+btxt(LX, y0 + 198, 11, PAL["muted"], "MOBO", ls=0.2);    simple(LX + 52, y0 + 194, 13, C["bright"], "TMOBO", unit="°C")
+btxt(392, y0 + 198, 11, PAL["muted"], "VRM", ls=0.2);    simple(434, y0 + 194, 13, C["text"], "TVRM", unit="°C")
+btxt(516, y0 + 198, 11, PAL["muted"], "PCH", ls=0.2);    simple(558, y0 + 194, 13, C["text"], "TPCH1DIO", unit="°C")
 pv(VX, y0 + 86, 14, "bright", "24 107 MB"); pv(VX, y0 + 126, 14, "text", "7 798 MB")
-pv(VX, y0 + 160, 14, "text", "27 %"); pv(VX, y0 + 194, 14, "bright", "34 °C")
+pv(VX, y0 + 160, 14, "text", "27 %")
+pv(LX + 52, y0 + 194, 13, "bright", "34 °C"); pv(434, y0 + 194, 13, "text", "38 °C"); pv(558, y0 + 194, 13, "text", "52 °C")
 
 # ---- module 04 : storage + network (y 2000..2400) ----
 y0 = 2000
 bframe(ML, y0, MR - ML, 400)
 btxt(IL, y0 + 18, 16, PAL["gold"], "STORAGE & NETWORK  //  04", ls=0.3, bold=True)
 brule(IL, y0 + 46, IR - IL, grad=False)
-drives = [("C:  SYSTEM", "SDRVCUTI"), ("D:  DATA", "SDRVDUTI"), ("E:  MEDIA", "SDRVEUTI")]
-for i, (cap, sensor) in enumerate(drives):
-    ry = y0 + 66 + i * 62
+drives = [("C:  SYSTEM · NVME", "SDRVCUTI", "THDD2", "69", "38"),
+          ("D:  DATA · NVME",   "SDRVDUTI", "THDD3", "0",  "48"),
+          ("E:  MEDIA · USB",   "SDRVEUTI", None,    "29", None),
+          ("H:  ARCHIVE · HDD", "SDRVHUTI", "THDD1", "62", "36")]
+for i, (cap, sensor, tsensor, upv, tpv) in enumerate(drives):
+    ry = y0 + 62 + i * 56
     btxt(IL, ry, 11, PAL["muted"], cap, ls=0.2)
-    simple(VX, ry - 4, 13, C["text"], sensor, unit="% USED")
-    bar(IL, ry + 22, IR - IL, 9, sensor)
-    pv(VX, ry - 4, 13, "text", f"{(47, 68, 32)[i]} % USED")
-ny = y0 + 258
+    simple(390, ry - 4, 13, C["text"], sensor, unit="% USED")
+    pv(390, ry - 4, 13, "text", f"{upv} % USED")
+    if tsensor:
+        simple(560, ry - 4, 13, C["bright"], tsensor, unit="°C")
+        pv(560, ry - 4, 13, "bright", f"{tpv} °C")
+    bar(IL, ry + 20, IR - IL, 9, sensor)
+ny = y0 + 296
 btxt(IL, ny, 12, PAL["gold"], "NETWORK", ls=0.3, bold=True)
 brule(IL, ny + 22, IR - IL, grad=False)
 btxt(IL, ny + 38, 11, PAL["muted"], "DOWN", ls=0.2); simple(180, ny + 34, 13, C["bright"], "SNIC3DLRATE", unit="KB/s")

@@ -9,3 +9,10 @@ Swap back to the night version the same way any time.
 
 All sensor IDs identical to friday-v2 (verified live on NETGNUSPC):
 NIC3 network, VCPU vcore, TGPU1MEM VRAM temp, SRTSSFPS via RTSS.
+
+v2.2 (2026-07-28)
+-----------------
+- Drive rows now C/D/E/H with live drive temps (C=THDD2 NVMe, D=THDD3
+  NVMe, H=THDD1 HDD; E is USB, no temp sensor)
+- Memory module shows MOBO / VRM / PCH temps (TMOBO/TVRM/TPCH1DIO,
+  all verified live)

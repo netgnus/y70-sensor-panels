@@ -62,3 +62,10 @@ SensorPanel Manager to change sensor, font, colour or position. The static
 gold frames, titles and labels are baked into the background image.
 
 Enjoy, Boss.
+
+v2.2 (2026-07-28)
+-----------------
+- Drive rows now C/D/E/H with live drive temps (C=THDD2 NVMe, D=THDD3
+  NVMe, H=THDD1 HDD; E is USB, no temp sensor)
+- Memory module shows MOBO / VRM / PCH temps (TMOBO/TVRM/TPCH1DIO,
+  all verified live)
