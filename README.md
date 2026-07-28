@@ -14,12 +14,13 @@ hotspot sensor the RTX 50-series no longer has).
 |---|---|
 | [`friday-v2/`](friday-v2/) | F.R.I.D.A.Y. — gold-on-black Stark HUD, ring gauges for CPU/GPU temp + RAM %, load graphs, drives, network, FPS |
 | [`friday-day/`](friday-day/) | F.R.I.D.A.Y. Day — same HUD on warm cream with dark-gold text, for bright rooms |
+| [`friday-blue/`](friday-blue/) | F.R.I.D.A.Y. Blue — arc-reactor blue night version |
 | [`skin-trio/Original/`](skin-trio/Original/) | Rainbow ring gauges on a purple nebula gradient |
 | [`skin-trio/Snow/`](skin-trio/Snow/) | Same layout, clean light theme |
 | [`skin-trio/Ink/`](skin-trio/Ink/) | Same layout, pure black |
 
-### F.R.I.D.A.Y. v2 — Night · Day
-<img src="friday-v2/preview.png" width="240"> <img src="friday-day/preview.png" width="240">
+### F.R.I.D.A.Y. v2 — Night · Day · Blue
+<img src="friday-v2/preview.png" width="220"> <img src="friday-day/preview.png" width="220"> <img src="friday-blue/preview.png" width="220">
 
 ### Skin Trio — Original · Snow · Ink
 <img src="skin-trio/Original/preview.png" width="220"> <img src="skin-trio/Snow/preview.png" width="220"> <img src="skin-trio/Ink/preview.png" width="220">
