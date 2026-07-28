@@ -1,8 +1,14 @@
 # Y70 F.R.I.D.A.Y. v2 — AIDA64 SensorPanel generator (HYTE Y70 Touch, 685x2560)
-# Generates: background.png (via headless Chrome), preview.png, Y70-FRIDAY-V2.sensorpanel
-import subprocess, os, zipfile
+# Generates: background.png (via headless Chrome), preview.png, .sensorpanel
+# Usage: python gen.py       -> night (gold on black), Y70-FRIDAY-V2
+#        python gen.py day   -> day   (dark gold on cream), Y70-FRIDAY-DAY
+import subprocess, os, sys
 
+DAY = len(sys.argv) > 1 and sys.argv[1] == "day"
 OUT = os.path.dirname(os.path.abspath(__file__))
+OUT = os.path.join(OUT, "out-day" if DAY else "out-night")
+os.makedirs(OUT, exist_ok=True)
+NAME = "Y70-FRIDAY-DAY" if DAY else "Y70-FRIDAY-V2"
 W, H = 685, 2560
 CHROME = r"C:\Program Files\Google\Chrome\Application\chrome.exe"
 
@@ -12,6 +18,13 @@ PAL = dict(
     muted="#8A7340", line="#3D2C00", line2="#6B4C00", panel="#0A0703",
     warn="#FF9500", bad="#FF3B3B", dark="#1A1100",
 )
+if DAY:
+    PAL.update(
+        gold="#A67C00", bright="#8A6400", cream="#7A5C10", text="#3D3220",
+        muted="#8A7A55", line="#D9CBA0", line2="#C2A96B", panel="#FAF4E4",
+        warn="#D97700", bad="#CC2222", dark="#EADFC2",
+    )
+GLOW = "rgba(140,105,0,.20)" if DAY else "rgba(255,184,0,.35)"
 def cref(hexcol):  # '#RRGGBB' -> Windows COLORREF int (R + G<<8 + B<<16)
     r, g, b = int(hexcol[1:3], 16), int(hexcol[3:5], 16), int(hexcol[5:7], 16)
     return r + (g << 8) + (b << 16)
@@ -215,7 +228,7 @@ def build_html(with_preview):
                 # outer gold ring with glow
                 f'<div style="position:absolute;left:{cx-r}px;top:{cy-r}px;width:{2*r}px;height:{2*r}px;'
                 f'border-radius:50%;border:2px solid {PAL["gold"]};opacity:.85;'
-                f'box-shadow:0 0 18px rgba(255,184,0,.35), inset 0 0 18px rgba(255,184,0,.18);"></div>'
+                f'box-shadow:0 0 18px {GLOW}, inset 0 0 18px {GLOW};"></div>'
                 # inner faint ring
                 f'<div style="position:absolute;left:{cx-r+8}px;top:{cy-r+8}px;width:{2*(r-8)}px;height:{2*(r-8)}px;'
                 f'border-radius:50%;border:1px solid {PAL["line2"]};"></div>'
@@ -226,7 +239,7 @@ def build_html(with_preview):
             _, x, y, w, h = k
             el.append(
                 f'<div style="position:absolute;left:{x}px;top:{y}px;width:{w}px;height:{h}px;'
-                f'background:linear-gradient(180deg,rgba(26,17,0,.55),rgba(10,7,3,.35));'
+                f'background:linear-gradient(180deg,{"rgba(250,244,228,.75),rgba(244,236,214,.55)" if DAY else "rgba(26,17,0,.55),rgba(10,7,3,.35)"});'
                 f'border:1px solid {PAL["line2"]};'
                 f'clip-path:polygon(0 14px,14px 0,calc(100% - 14px) 0,100% 14px,100% calc(100% - 14px),'
                 f'calc(100% - 14px) 100%,14px 100%,0 calc(100% - 14px));"></div>'
@@ -261,12 +274,12 @@ def build_html(with_preview):
                      f'<div style="width:{fill}%;height:100%;background:{PAL["gold"]};"></div></div>')
     return f"""<!DOCTYPE html><html><head><meta charset="utf-8"><style>
 *{{margin:0;padding:0;box-sizing:border-box}}
-html,body{{width:{W}px;height:{H}px;overflow:hidden;background:#000}}
+html,body{{width:{W}px;height:{H}px;overflow:hidden;background:{"#F1E9D2" if DAY else "#000"}}}
 body::before{{content:"";position:fixed;inset:0;background:
- radial-gradient(ellipse 90% 40% at 50% 8%,rgba(255,215,106,.10),transparent 70%),
- radial-gradient(ellipse 90% 30% at 50% 55%,rgba(255,184,0,.06),transparent 70%),
- radial-gradient(ellipse 90% 30% at 50% 95%,rgba(255,184,0,.08),transparent 70%),
- repeating-linear-gradient(0deg,rgba(255,184,0,.02) 0 1px,transparent 1px 3px);}}
+ radial-gradient(ellipse 90% 40% at 50% 8%,{"rgba(255,252,240,.85)" if DAY else "rgba(255,215,106,.10)"},transparent 70%),
+ radial-gradient(ellipse 90% 30% at 50% 55%,{"rgba(255,250,232,.55)" if DAY else "rgba(255,184,0,.06)"},transparent 70%),
+ radial-gradient(ellipse 90% 30% at 50% 95%,{"rgba(255,250,232,.65)" if DAY else "rgba(255,184,0,.08)"},transparent 70%),
+ repeating-linear-gradient(0deg,{"rgba(140,105,0,.03)" if DAY else "rgba(255,184,0,.02)"} 0 1px,transparent 1px 3px);}}
 </style></head><body>{corners}{"".join(el)}{pvel}</body></html>"""
 
 for name, wp in [("bg.html", False), ("preview.html", True)]:
@@ -285,7 +298,7 @@ img_item = f"<ID>IMG</ID><URL></URL><ITMX>0</ITMX><ITMY>0</ITMY><IMGFIL>backgrou
 doc = (f"<SPVER>100</SPVER><SWVER>7.40.7100</SWVER>\n"
        f"<SPWIDTH>{W}</SPWIDTH><SPHEIGHT>{H}</SPHEIGHT><SPBGCOLOR>0</SPBGCOLOR>\n"
        + img_item + "\n" + "\n".join(items) + "\n")
-with open(os.path.join(OUT, "Y70-FRIDAY-V2.sensorpanel"), "w", encoding="cp1252", errors="replace") as f:
+with open(os.path.join(OUT, NAME + ".sensorpanel"), "w", encoding="cp1252", errors="replace") as f:
     f.write(doc)
-print("items:", len(items), "| png:", os.path.getsize(os.path.join(OUT, 'background.png')),
-      "| panel:", os.path.getsize(os.path.join(OUT, 'Y70-FRIDAY-V2.sensorpanel')))
+print(NAME, "| items:", len(items), "| png:", os.path.getsize(os.path.join(OUT, 'background.png')),
+      "| panel:", os.path.getsize(os.path.join(OUT, NAME + '.sensorpanel')))

@@ -1,0 +1,11 @@
+F.R.I.D.A.Y. DAY EDITION  -  HYTE Y70 TOUCH (685 x 2560)
+=========================================================
+Light daytime version of the F.R.I.D.A.Y. v2 panel: warm cream
+background, dark-gold text - same layout, sensors and rings as v2,
+readable in a bright room.
+
+Install: AIDA64 -> SensorPanel Manager -> Import -> Y70-FRIDAY-DAY.sensorpanel
+Swap back to the night version the same way any time.
+
+All sensor IDs identical to friday-v2 (verified live on NETGNUSPC):
+NIC3 network, VCPU vcore, TGPU1MEM VRAM temp, SRTSSFPS via RTSS.
