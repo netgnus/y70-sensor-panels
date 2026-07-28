@@ -16,3 +16,11 @@ v2.2 (2026-07-28)
   NVMe, H=THDD1 HDD; E is USB, no temp sensor)
 - Memory module shows MOBO / VRM / PCH temps (TMOBO/TVRM/TPCH1DIO,
   all verified live)
+
+v2.3 (2026-07-28)
+-----------------
+- Weather next to the date (Melbourne, Open-Meteo): temp = SREGVALS1,
+  condition = SREGVALS2, fed by AIDA64 registry ImportValues.
+- Updater: Documents\AIDA\weather-update.ps1, scheduled task
+  "AIDA64 Weather" every 15 min (schtasks /Delete /TN "AIDA64 Weather"
+  to remove). Blank until the task has run once.

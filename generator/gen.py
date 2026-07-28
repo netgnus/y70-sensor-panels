@@ -96,7 +96,12 @@ brule(ML, 100, MR - ML)
 
 # ---- clock ----
 simple(120, 128, 78, C["gold"], "STIME", bold=True)
-simple(240, 268, 15, C["cream"], "SDATE")
+simple(130, 268, 15, C["cream"], "SDATE")
+btxt(300, 272, 11, PAL["muted"], "//", ls=0.1)
+simple(340, 268, 15, C["bright"], "SREGVALS1", bold=True)   # weather temp (registry import)
+simple(425, 268, 15, C["cream"], "SREGVALS2")               # weather condition
+pv(130, 268, 15, "cream", "13/07/2026")
+pv(340, 268, 15, "bright", "14°C"); pv(425, 268, 15, "cream", "MOSTLY CLEAR")
 btxt(0, 306, 12, PAL["muted"], "SESSION UPTIME", ls=0.35, center=True, w=W)
 simple(268, 326, 13, C["bright"], "SUPTIME")
 
@@ -212,7 +217,7 @@ pv(180, ny + 34, 13, "bright", "2 340 KB/s"); pv(430, ny + 34, 13, "text", "188 
 # ---- footer ----
 brule(ML, 2478, MR - ML)
 btxt(0, 2498, 11, PAL["muted"], "AIDA64 EXTREME  //  HYTE Y70 TOUCH  //  685 x 2560", ls=0.28, center=True, w=W)
-pv(120, 128, 78, "gold", "21:36:54"); pv(240, 268, 15, "cream", "13/07/2026"); pv(268, 326, 13, "bright", "3 d 04:12")
+pv(120, 128, 78, "gold", "21:36:54"); pv(268, 326, 13, "bright", "3 d 04:12")
 
 # =============== HTML background ===============
 def build_html(with_preview):
