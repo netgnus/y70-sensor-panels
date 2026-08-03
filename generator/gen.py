@@ -130,7 +130,7 @@ brule(IL, 418, IR - IL, grad=False)
 specs = [
     ("PROCESSOR", "AMD RYZEN 7 7800X3D · 8C/16T"),
     ("GRAPHICS",  "NVIDIA RTX 5070 Ti · 16 GB GDDR7"),
-    ("MEMORY",    "32 GB DDR5-6000 · DOMINATOR RGB"),
+    ("MEMORY",    "64 GB DDR5-6000 · VENGEANCE"),
     ("BOARD",     "ASUS PRIME X670-P · AM5"),
     ("STORAGE",   "6 DRIVES · 8.6 TB TOTAL"),
     ("OS",        "WINDOWS 11 PRO 25H2"),
@@ -188,7 +188,7 @@ hw_module(1180, "GRAPHICS  //  02", "NVIDIA RTX 5070 Ti — 16 GB GDDR7",
 y0 = 1690
 bframe(ML, y0, MR - ML, 270)
 btxt(IL, y0 + 18, 16, PAL["gold"], "MEMORY  //  03", ls=0.3, bold=True)
-btxt(IL, y0 + 46, 11, PAL["cream"], "32 GB DDR5-6000 — CORSAIR DOMINATOR", ls=0.2)
+btxt(IL, y0 + 46, 11, PAL["cream"], "64 GB DDR5-6000 — CORSAIR VENGEANCE", ls=0.2)
 brule(IL, y0 + 68, IR - IL, grad=False)
 bcirc(135, y0 + 158, 76)                                          # RAM % ring
 simple(93, y0 + 122, 46, C["bright"], "SMEMUTI", bold=True)
